@@ -52,14 +52,11 @@
       const obj = Object.fromEntries(formData);
       console.log(obj);
 
-      //New Code
       let events = JSON.parse(localStorage.getItem('events')) || [];
       events.push(obj);
       localStorage.setItem('events', JSON.stringify(events));
 
-      // const json = JSON.stringify(obj);
-      // localStorage.setItem('form', json);
-      //window.location.href = 'disp_event.html';
+      window.location.href = 'disp_event.html';
     })
   </script>
 </body>

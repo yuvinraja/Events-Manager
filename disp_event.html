@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
   <title>Document</title>
 </head>
+
 <body>
   <header>
     <h1>Event Master</h1>
@@ -17,7 +19,7 @@
         <li><a href="disp_event.html">Display Events</a></li>
       </ul>
     </nav>
-  </header> 
+  </header>
 
   <!-- Display event box -->
   <main>
@@ -29,6 +31,8 @@
             <th>Event Date</th>
             <th>Event Time</th>
             <th>Event Description</th>
+            <th>Time Left</th>
+            <th>Action</th>
           </tr>
         </thead>
         <tbody id="eventBody">
@@ -38,32 +42,82 @@
     </div>
 
     <script>
-      // const json = localStorage.getItem('form');
-      // const obj = JSON.parse(json);
-      // console.log(obj);
-
-      // for (key in obj) {
-      //   const markup = `
-      //     <div>
-      //       <span>${key}: ${obj[key]}</span>
-      //     </div>
-      //   `;
-      //   document.getElementById('data').innerHTML += markup;
-      // }
-
       const events = JSON.parse(localStorage.getItem('events')) || [];
       const eventsBody = document.getElementById('eventBody');
 
-      events.forEach(event => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
+      function deleteEvent(index) {
+        events.splice(index, 1);
+        localStorage.setItem('events', JSON.stringify(events));
+        renderEvents();
+      }
+
+      function sortEvents() {
+        events.sort((a,b) => {
+          const dataA = new Date(a.event_date + ' ' + a.event_time);
+          const dataB = new Date(b.event_date + ' ' + b.event_time);
+          return dataA - dataB;
+        })
+      }
+
+      function calculateTimeLeft(event) {
+        const eventDateTime = new Date(event.event_date + ' ' + event.event_time).getTime();
+        const now = new Date().getTime();
+        const timeLeft = eventDateTime - now;
+
+        if(timeLeft < 0) {
+          return 'Event has passed';
+        }
+
+        const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+        return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+      }
+
+      function updateTimeLeft() {
+        const rows = eventBody.querySelectorAll('tr');
+        rows.forEach((row, index) => {
+          const timeLeftCell = row.querySelector('.time-left');
+          if(timeLeftCell) {
+            const event = events[index];
+            const timeLeft = calculateTimeLeft(event);
+            if(timeLeft == 'Event has passed') {
+              timeLeftCell.textContent = timeLeft;
+              row.style.backgroundColor = 'red';
+            } else {
+              timeLeftCell.textContent = timeLeft;
+              if (timeLeft == '00d 00h 00m 00s') {
+                clearInterval(interval);
+              }
+            }
+          }
+        });
+      }
+
+      function renderEvents() {
+        sortEvents();
+        eventsBody.innerHTML = '';
+  
+        events.forEach((event, index) => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
           <td>${event.event_name}</td>
           <td>${event.event_date}</td>
           <td>${event.event_time}</td>
           <td>${event.event_description}</td>
-        `;
-        eventBody.appendChild(row);
-      });
+          <td class="time-left">/td>
+          <td><button onclick="deleteEvent(${index})">Delete</button></td>
+          `;
+          eventBody.appendChild(row);
+        });
+      }
+
+      renderEvents();
+      const interval = setInterval(updateTimeLeft, 1000);
+
     </script>
 </body>
+
 </html>
