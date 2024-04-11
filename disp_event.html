@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <title>Document</title>
+</head>
+<body>
+  <header>
+    <h1>Event Master</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About</a></li>
+        <li><a href="add_event.html">Add Event</a></li>
+        <li><a href="disp_event.html">Display Events</a></li>
+      </ul>
+    </nav>
+  </header> 
+
+  <!-- Display event box -->
+  <main>
+    <div class="container">
+      <table id="eventTable">
+        <thead>
+          <tr>
+            <th>Event Name</th>
+            <th>Event Date</th>
+            <th>Event Time</th>
+            <th>Event Description</th>
+          </tr>
+        </thead>
+        <tbody id="eventBody">
+          <!-- Data will come here -->
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      // const json = localStorage.getItem('form');
+      // const obj = JSON.parse(json);
+      // console.log(obj);
+
+      // for (key in obj) {
+      //   const markup = `
+      //     <div>
+      //       <span>${key}: ${obj[key]}</span>
+      //     </div>
+      //   `;
+      //   document.getElementById('data').innerHTML += markup;
+      // }
+
+      const events = JSON.parse(localStorage.getItem('events')) || [];
+      const eventsBody = document.getElementById('eventBody');
+
+      events.forEach(event => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${event.event_name}</td>
+          <td>${event.event_date}</td>
+          <td>${event.event_time}</td>
+          <td>${event.event_description}</td>
+        `;
+        eventBody.appendChild(row);
+      });
+    </script>
+</body>
+</html>
