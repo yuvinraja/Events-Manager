@@ -8,7 +8,7 @@
 }
 
 li, a {
-  font-family: 'Arial', sans-serif;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-size: 16px;
   color: #123C69;
   text-decoration: none;
@@ -23,7 +23,6 @@ header {
 }
 
 ul {
-
   list-style: none;
 }
 
@@ -55,12 +54,118 @@ body {
 }
 
 .container {
-  width: 50%;
   margin: 0 auto;
   margin-top: 30px;
+  margin-bottom: 30px;
   padding: 20px;
   background-color: #EEE2DC;
   border: 1px dotted whitesmoke;
   font-weight: 500;
 }
 
+.add {
+  width: 50%;
+}
+
+.disp {
+  width: 90%;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th {
+  background-color: #AC3B61;
+  color: white;
+  font-weight: normal;
+}
+
+th, td {
+  padding: 10px;
+  text-align: center;
+  border-top: 1px solid #123C69;
+  border-bottom: 1px solid #123C69;
+}
+
+
+button {
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.ele button {
+  padding: 10px 20px;
+  background-color: #ac3b61;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.ele button:hover {
+  background-color: #123C69;
+}
+
+#add_event {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  flex-direction: column;
+}
+
+input {
+  padding: 5px;
+  margin: 10px 0px;
+  width: 50%;
+  font-size: 20px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+input[type="text"] {
+  width: 100%;
+}
+input[type="date"] {
+  width: 100%;
+}
+input[type="time"] {
+  width: 100%;
+}
+
+textarea {
+  padding: 10px;
+  margin: 10px 0px;
+  font-size: 15px;
+  resize: none;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+label {
+  margin-right: 20px;
+}
+
+h2 {
+  text-align: center;
+}
+
+.time-left {
+  text-align: center;
+  font-size: 30px;
+  word-spacing: 25px;
+}
+
+.bot-text {
+  font-size: small;
+  word-spacing: 10px; 
+  display: inline-block;
+}
+
+.dayOfMonth {
+  font-size: 40px;
+  font-weight: bold;
+}

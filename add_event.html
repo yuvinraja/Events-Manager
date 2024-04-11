@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
+  
   <title>Document</title>
 </head>
 <body>
@@ -23,26 +24,42 @@
 
   <!--Add event box -->
   <main>
-    <div class="container">
-      <form id="add_event"> 
-        <label for="event_name">Event Name</label>
-        <input type="text" id="event_name" name="event_name" required>
-        <br>
-        <label for="event_date">Event Date</label>
-        <input type="date" id="event_date" name="event_date" required>
-        <br>
-        <label for="event_time">Event Time</label>
-        <input type="time" id="event_time" name="event_time" required>
-        <br>
-        <label for="event_description">Event Description</label>
-        <textarea id="event_description" name="event_description" required></textarea>
-        <br>
-        <button type="submit" value="submit">Submit</button>
+    <div class="container add">
+      <h2>Add Event</h2>
+      <form id="add_event" > 
+        <div class="ele">
+          <label for="event_name">Event Name</label>
+          <input type="text" id="event_name" name="event_name" required>
+        </div>
+        <div class="ele">
+          <label for="event_date">Date</label>
+          <input type="date" id="event_date" name="event_date" required>
+        </div>
+        <div class="ele">
+          <label for="event_time">Time</label>
+          <input type="time" id="event_time" name="event_time" required>
+        </div>
+        <div class="ele">
+          <label for="event_description">Event Description</label><br>
+          <textarea id="event_description" name="event_description" rows="8" cols="80" required></textarea>
+        </div>
+        <div class="ele">
+          <button type="submit" value="submit">Submit</button>
+          <button type="reset" value="clear">Clear</button>
+        </div>
       </form>
     </div>
   </main>
 
   <script>
+    const editEvent = JSON.parse(localStorage.getItem('editEvent'));
+    if(editEvent) {
+      document.getElementById('event_name').value = editEvent.event_name;
+      document.getElementById('event_date').value = editEvent.event_date;
+      document.getElementById('event_time').value = editEvent.event_time;
+      document.getElementById('event_description').value = editEvent.event_description;
+    }
+
     const form = document.querySelector('form');
 
     form.addEventListener('submit', (e)=> {
@@ -51,6 +68,8 @@
       const formData = new FormData(form);
       const obj = Object.fromEntries(formData);
       console.log(obj);
+
+      localStorage.removeItem('editEvent');
 
       let events = JSON.parse(localStorage.getItem('events')) || [];
       events.push(obj);

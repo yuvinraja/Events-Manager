@@ -23,16 +23,18 @@
 
   <!-- Display event box -->
   <main>
-    <div class="container">
+    <div class="container disp">
+      <h2>Upcoming Events</h2>
       <table id="eventTable">
         <thead>
           <tr>
-            <th>Event Name</th>
-            <th>Event Date</th>
-            <th>Event Time</th>
-            <th>Event Description</th>
-            <th>Time Left</th>
-            <th>Action</th>
+            <th>Date</th>
+            <th>Month</th>
+            <th>Time</th>
+            <th>Event</th>
+            <th>Time left</th>
+            <th>Edit</th>
+            <th>Delete</th>
           </tr>
         </thead>
         <tbody id="eventBody">
@@ -51,8 +53,15 @@
         renderEvents();
       }
 
+      function editEvent(index) {
+        const event = events[index];
+        localStorage.setItem('editEvent', JSON.stringify(event));
+        deleteEvent(index);
+        window.location.href = 'add_event.html';
+      }
+
       function sortEvents() {
-        events.sort((a,b) => {
+        events.sort((a, b) => {
           const dataA = new Date(a.event_date + ' ' + a.event_time);
           const dataB = new Date(b.event_date + ' ' + b.event_time);
           return dataA - dataB;
@@ -64,7 +73,7 @@
         const now = new Date().getTime();
         const timeLeft = eventDateTime - now;
 
-        if(timeLeft < 0) {
+        if (timeLeft < 0) {
           return 'Event has passed';
         }
 
@@ -73,22 +82,22 @@
         const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
         const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
 
-        return `${days}d ${hours}h ${minutes}m ${seconds}s`;
+        return `${days} ${hours} ${minutes} ${seconds}`;
       }
 
       function updateTimeLeft() {
         const rows = eventBody.querySelectorAll('tr');
         rows.forEach((row, index) => {
           const timeLeftCell = row.querySelector('.time-left');
-          if(timeLeftCell) {
+          if (timeLeftCell) {
             const event = events[index];
             const timeLeft = calculateTimeLeft(event);
-            if(timeLeft == 'Event has passed') {
+            if (timeLeft == 'Event has passed') {
               timeLeftCell.textContent = timeLeft;
-              row.style.backgroundColor = 'red';
+              row.style.backgroundColor = '#ed6d6d';
             } else {
               timeLeftCell.textContent = timeLeft;
-              if (timeLeft == '00d 00h 00m 00s') {
+              if (timeLeft == '00 00 00 00') {
                 clearInterval(interval);
               }
             }
@@ -99,19 +108,51 @@
       function renderEvents() {
         sortEvents();
         eventsBody.innerHTML = '';
-  
+
         events.forEach((event, index) => {
           const row = document.createElement('tr');
+          const eventDate = new Date(event.event_date);
+          const dayOfWeek = eventDate.toLocaleString('en-us', { weekday: 'short' });
+          const monthName = eventDate.toLocaleString('en-us', { month: 'long' });
+          const dateOfMonth = eventDate.getDate();
+          const timeFormat = convertTo12HourFormat(event.event_time);
+          // row.innerHTML = `
+          // <td>${event.event_name}</td>
+          // <td>${event.event_date}</td>
+          // <td>${event.event_time}</td>
+          // <td class="time-left"></td>
+          // <td><button onclick="editEvent(${index})">✎</button></td>
+          // <td><button onclick="deleteEvent(${index})">❌</button></td>
+          // `;
           row.innerHTML = `
+          
+          <td>
+            <div class="day">
+              <div>${dayOfWeek}</div>
+              <div class="dayOfMonth">${dateOfMonth}</div>
+            </div>
+          </td>
+          <td>${monthName}</td>
+          <td>${timeFormat}</td>
           <td>${event.event_name}</td>
-          <td>${event.event_date}</td>
-          <td>${event.event_time}</td>
-          <td>${event.event_description}</td>
-          <td class="time-left">/td>
-          <td><button onclick="deleteEvent(${index})">Delete</button></td>
+          <td>
+            <div class="lefttime">
+              <div class="time-left"></div>
+              <div class="bot-text">DAYS HOURS MINUTES SECONDS</div>
+            </div>
+          </td>
+          <td><button onclick="editEvent(${index})">✎</button></td>
+          <td><button onclick="deleteEvent(${index})">❌</button></td>
           `;
           eventBody.appendChild(row);
         });
+      }
+
+      function convertTo12HourFormat(time) {
+        let [hours, minutes] = time.split(':');
+        const suffix = hours >= 12 ? 'PM' : 'AM';
+        hours = hours % 12 || 12; // Convert hours to 12-hour format
+        return `${hours}:${minutes} ${suffix}`;
       }
 
       renderEvents();
