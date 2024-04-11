@@ -45,7 +45,7 @@
 
     <script>
       const events = JSON.parse(localStorage.getItem('events')) || [];
-      const eventsBody = document.getElementById('eventBody');
+      const eventBody = document.getElementById('eventBody');
 
       function deleteEvent(index) {
         events.splice(index, 1);
@@ -107,7 +107,7 @@
 
       function renderEvents() {
         sortEvents();
-        eventsBody.innerHTML = '';
+        eventBody.innerHTML = '';
 
         events.forEach((event, index) => {
           const row = document.createElement('tr');
@@ -116,14 +116,6 @@
           const monthName = eventDate.toLocaleString('en-us', { month: 'long' });
           const dateOfMonth = eventDate.getDate();
           const timeFormat = convertTo12HourFormat(event.event_time);
-          // row.innerHTML = `
-          // <td>${event.event_name}</td>
-          // <td>${event.event_date}</td>
-          // <td>${event.event_time}</td>
-          // <td class="time-left"></td>
-          // <td><button onclick="editEvent(${index})">✎</button></td>
-          // <td><button onclick="deleteEvent(${index})">❌</button></td>
-          // `;
           row.innerHTML = `
           
           <td>
@@ -134,7 +126,7 @@
           </td>
           <td>${monthName}</td>
           <td>${timeFormat}</td>
-          <td>${event.event_name}</td>
+          <td onclick="redirectToEventDetails(${index})"><a class="event_title">${event.event_name}<a></td>
           <td>
             <div class="lefttime">
               <div class="time-left"></div>
@@ -148,11 +140,21 @@
         });
       }
 
+      function redirectToEventDetails(eventId) {
+        // const event = events[eventId];
+        // sessionStorage.setItem('selectedEvent', JSON.stringify(event));
+        // window.location.href = 'event_details.html';
+
+        const event = events[eventId];
+        localStorage.setItem('selectedEvent', JSON.stringify(event));
+        window.location.href = 'event_details.html';
+      }
+
       function convertTo12HourFormat(time) {
         let [hours, minutes] = time.split(':');
         const suffix = hours >= 12 ? 'PM' : 'AM';
-        hours = hours % 12 || 12; // Convert hours to 12-hour format
-        return `${hours}:${minutes} ${suffix}`;
+        hours = hours % 12 || 12; 
+        return `${hours}:${minutes} ${suffix}`
       }
 
       renderEvents();

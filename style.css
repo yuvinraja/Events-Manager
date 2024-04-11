@@ -1,7 +1,3 @@
-/* * {
-  border: 1px solid red;
-} */
-
 * {
   margin: 0px;
   padding: 0px;
@@ -54,8 +50,6 @@ body {
   font-size: 20px;
 }
 
-/* style.css code remains largely unchanged */
-
 .hero {
   background-image: url('calendar2.jpg');
   background-size: cover;
@@ -78,22 +72,17 @@ body {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
-  /* Adjust the transparency by changing the last value (0.5 in this case) */
   opacity: 0;
-  /* Initially hidden */
   transition: opacity 0.3s ease;
-  /* Smooth transition */
 }
 
 .hero:hover::before {
   opacity: 1;
-  /* Show the overlay on hover */
 }
 
 .hero-content {
   position: relative;
   z-index: 1;
-  /* Ensure the content is above the overlay */
 }
 
 .hero-content {
@@ -184,8 +173,10 @@ p {
   font-weight: 500;
 }
 
-.add {
+.add,
+.details {
   width: 50%;
+  text-align: center;
 }
 
 .disp {
@@ -245,21 +236,9 @@ button {
 input {
   padding: 5px;
   margin: 10px 0px;
-  width: 50%;
+  width: 100%;
   font-size: 20px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-}
-
-input[type="text"] {
-  width: 100%;
-}
-
-input[type="date"] {
-  width: 100%;
-}
-
-input[type="time"] {
-  width: 100%;
 }
 
 textarea {
@@ -283,14 +262,45 @@ h2 {
   font-size: 30px;
   word-spacing: 25px;
 }
-
 .bot-text {
   font-size: small;
   word-spacing: 10px;
   display: inline-block;
 }
-
 .dayOfMonth {
   font-size: 40px;
   font-weight: bold;
+}
+
+.event_title {
+  font-size: 25px;
+}
+
+#eventBody a:hover {
+  color: #AC3B61;
+  transition: all 0.3s ease 0s;
+  cursor: pointer;
+}
+
+#eventDetails strong {
+  color: #123C69;
+}
+
+#eventDetails p {
+  color: #AC3B61;
+}
+
+.details button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #ac3b61;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.details button:hover {
+  background-color: #123C69;
 }
